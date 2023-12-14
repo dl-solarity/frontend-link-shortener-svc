@@ -1,0 +1,13 @@
+type: object
+required:
+  - type
+  - id
+properties:
+  type:
+    description: resource type
+    type: string
+    enum:
+      - link
+  id:
+    description: link identifier
+    type: string
