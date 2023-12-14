@@ -6,6 +6,7 @@ import (
 
 	"github.com/dl-solarity/frontend-link-shortener-svc/internal/config"
 	"gitlab.com/distributed_lab/kit/copus/types"
+	"gitlab.com/distributed_lab/kit/pgdb"
 	"gitlab.com/distributed_lab/logan/v3"
 	"gitlab.com/distributed_lab/logan/v3/errors"
 )
@@ -14,6 +15,7 @@ type service struct {
 	log      *logan.Entry
 	copus    types.Copus
 	listener net.Listener
+	db       *pgdb.DB
 }
 
 func (s *service) run() error {
@@ -32,6 +34,7 @@ func newService(cfg config.Config) *service {
 		log:      cfg.Log(),
 		copus:    cfg.Copus(),
 		listener: cfg.Listener(),
+		db:       cfg.DB(),
 	}
 }
 
