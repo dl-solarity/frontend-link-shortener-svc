@@ -20,6 +20,7 @@ func (s *service) router() chi.Router {
 	)
 	r.Route("/shortener", func(r chi.Router) {
 		r.Post("/", handlers.CreateLink)
+		r.Get("/{link}", handlers.GetData)
 	})
 
 	return r
