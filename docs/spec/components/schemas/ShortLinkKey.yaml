@@ -11,3 +11,4 @@ properties:
   id:
     description: link identifier
     type: string
+    example: '5860cdcd'

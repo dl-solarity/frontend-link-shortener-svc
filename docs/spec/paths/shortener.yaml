@@ -25,6 +25,8 @@ post:
               data:
                 type: object
                 $ref: '#/components/schemas/ShortLink'
+    '403':
+      description: Bad request
     '429':
       description: Too many requests
     '500':
