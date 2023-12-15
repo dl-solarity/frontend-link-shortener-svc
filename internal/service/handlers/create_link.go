@@ -10,6 +10,7 @@ import (
 	"github.com/ethereum/go-ethereum/crypto"
 	"gitlab.com/distributed_lab/ape"
 	"gitlab.com/distributed_lab/ape/problems"
+	"gitlab.com/distributed_lab/logan/v3/errors"
 )
 
 const (
@@ -34,7 +35,19 @@ func CreateLink(w http.ResponseWriter, r *http.Request) {
 		Path:      path,
 	}
 
-	link, err := LinksQ(r).Insert(linkData)
+	var link *data.Link
+	err = LinksQ(r).Transaction(func(q data.LinksQ) error {
+		if err := q.Delete(linkData.ID); err != nil {
+			return errors.Wrap(err, "failed to delete a link")
+		}
+
+		link, err = q.Insert(linkData)
+		if err != nil {
+			return errors.Wrap(err, "failed to insert a link")
+		}
+
+		return nil
+	})
 	if err != nil {
 		Log(r).WithError(err).Error("failed to create a link")
 		ape.RenderErr(w, problems.InternalError())
