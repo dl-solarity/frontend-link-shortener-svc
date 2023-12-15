@@ -1,16 +1,20 @@
 package handlers
 
 import (
-	"crypto/sha256"
-	"encoding/hex"
 	"net/http"
 	"time"
 
 	"github.com/dl-solarity/frontend-link-shortener-svc/internal/data"
 	"github.com/dl-solarity/frontend-link-shortener-svc/internal/service/requests"
 	"github.com/dl-solarity/frontend-link-shortener-svc/resources"
+	"github.com/ethereum/go-ethereum/crypto"
 	"gitlab.com/distributed_lab/ape"
 	"gitlab.com/distributed_lab/ape/problems"
+)
+
+const (
+	linkLenght = 8
+	padding    = 2
 )
 
 func CreateLink(w http.ResponseWriter, r *http.Request) {
@@ -24,7 +28,7 @@ func CreateLink(w http.ResponseWriter, r *http.Request) {
 	linkHash := getHash(getHash(path) + getHash(string(value)))
 
 	linkData := data.Link{
-		ID:        linkHash,
+		ID:        linkHash[padding : padding+linkLenght],
 		CreatedAt: time.Now().UTC(),
 		Value:     request.Data.Attributes.Value,
 		Path:      path,
@@ -59,7 +63,6 @@ func newLinkModel(link *data.Link) resources.ShortLink {
 }
 
 func getHash(s string) string {
-	hash := sha256.New()
-	hash.Write([]byte(s))
-	return hex.EncodeToString(hash.Sum(nil))
+	hash := crypto.Keccak256Hash([]byte(s))
+	return hash.Hex()
 }
