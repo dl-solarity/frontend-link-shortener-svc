@@ -12,7 +12,11 @@ type LinksQ interface {
 
 	Insert(data Link) (*Link, error)
 
+	Delete(id string) error
+
 	FilterByID(id ...string) LinksQ
+
+	Transaction(fn func(q LinksQ) error) error
 }
 
 type Link struct {
