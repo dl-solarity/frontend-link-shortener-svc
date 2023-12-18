@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	linkLenght = 8
+	linkLength = 8
 	padding    = 2
 )
 
@@ -29,7 +29,7 @@ func CreateLink(w http.ResponseWriter, r *http.Request) {
 	linkHash := getHash(getHash(path) + getHash(string(value)))
 
 	linkData := data.Link{
-		ID:        linkHash[padding : padding+linkLenght],
+		ID:        linkHash[padding : padding+linkLength],
 		CreatedAt: time.Now().UTC(),
 		Value:     request.Data.Attributes.Value,
 		Path:      path,
