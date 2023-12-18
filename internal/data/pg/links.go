@@ -3,7 +3,6 @@ package pg
 import (
 	"database/sql"
 	"fmt"
-	"time"
 
 	sq "github.com/Masterminds/squirrel"
 	"github.com/dl-solarity/frontend-link-shortener-svc/internal/data"
@@ -40,11 +39,7 @@ func (q *linksQ) Get() (*data.Link, error) {
 }
 
 func (q *linksQ) Insert(value data.Link) (*data.Link, error) {
-	value.CreatedAt = time.Now().UTC()
 	clauses := structs.Map(value)
-	clauses["value"] = value.Value
-	clauses["path"] = value.Path
-	clauses["id"] = value.ID
 
 	var result data.Link
 	stmt := sq.Insert(linksTableName).SetMap(clauses).Suffix("returning *")

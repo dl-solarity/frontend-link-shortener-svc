@@ -10,7 +10,7 @@ import (
 )
 
 type ShortLinkAttributes struct {
-	CreatedAt time.Time `json:"created_at"`
+	ExpiredAt time.Time `json:"expired_at"`
 	// tool path
 	Path string `json:"path"`
 	// abi or hash data

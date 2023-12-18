@@ -15,10 +15,10 @@ allOf:
             description: tool path
             type: string
             example: '/abi/encoder'
-          created_at:
+          expired_at:
             type: string
             format: time.Time
         required:
           - value
           - path
-          - created_at
+          - expired_at

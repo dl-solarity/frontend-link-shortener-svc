@@ -30,7 +30,7 @@ func CreateLink(w http.ResponseWriter, r *http.Request) {
 
 	linkData := data.Link{
 		ID:        linkHash[padding : padding+linkLength],
-		CreatedAt: time.Now().UTC(),
+		ExpiredAt: time.Now().Add(time.Hour * 24 * 7).UTC(),
 		Value:     request.Data.Attributes.Value,
 		Path:      path,
 	}
@@ -68,7 +68,7 @@ func newLinkModel(link *data.Link) resources.ShortLink {
 			Type: resources.LINK,
 		},
 		Attributes: resources.ShortLinkAttributes{
-			CreatedAt: link.CreatedAt,
+			ExpiredAt: link.ExpiredAt,
 			Value:     link.Value,
 			Path:      link.Path,
 		},

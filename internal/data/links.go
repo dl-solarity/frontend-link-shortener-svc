@@ -20,8 +20,8 @@ type LinksQ interface {
 }
 
 type Link struct {
-	ID        string          `db:"id" structs:"-"`
-	CreatedAt time.Time       `db:"created_at" structs:"created_at"`
-	Value     json.RawMessage `db:"value" structs:"-"`
-	Path      string          `db:"path" structs:"-"`
+	ID        string          `db:"id" structs:"id"`
+	ExpiredAt time.Time       `db:"expired_at" structs:"expired_at"`
+	Value     json.RawMessage `db:"value" structs:"value"`
+	Path      string          `db:"path" structs:"path"`
 }
