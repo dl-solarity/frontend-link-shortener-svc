@@ -2,6 +2,7 @@ package config
 
 import (
 	"context"
+	"time"
 
 	redis2 "github.com/redis/go-redis/v9"
 	"gitlab.com/distributed_lab/figure"
@@ -52,7 +53,10 @@ func (r *redis) RedisClient() *redis2.Client {
 		}
 
 		cli := redis2.NewClient(opts)
-		_, err = cli.Ping(context.Background()).Result()
+		ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
+		defer cancel()
+
+		_, err = cli.Ping(ctx).Result()
 		if err != nil {
 			panic(errors.Wrap(err, "failed to ping redis database"))
 		}
