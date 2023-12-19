@@ -28,7 +28,7 @@ func CreateLink(w http.ResponseWriter, r *http.Request) {
 	linksCfg := Links(r)
 	linkData := newLinkData(request, linksCfg)
 
-	link, err := LinksQ(r).Insert(*linkData)
+	link, err := LinksQ(r).Insert(r.Context(), *linkData)
 	if err != nil {
 		Log(r).WithError(err).Error("failed to create a link")
 		ape.RenderErr(w, problems.InternalError())

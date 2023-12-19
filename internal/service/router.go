@@ -1,7 +1,7 @@
 package service
 
 import (
-	"github.com/dl-solarity/frontend-link-shortener-svc/internal/data/pg"
+	"github.com/dl-solarity/frontend-link-shortener-svc/internal/data/redis"
 	"github.com/dl-solarity/frontend-link-shortener-svc/internal/service/handlers"
 	"github.com/go-chi/chi"
 	"gitlab.com/distributed_lab/ape"
@@ -15,7 +15,7 @@ func (s *service) router() chi.Router {
 		ape.LoganMiddleware(s.log),
 		ape.CtxMiddleware(
 			handlers.CtxLog(s.log),
-			handlers.CtxLinksQ(pg.NewLinksQ(s.db)),
+			handlers.CtxLinksQ(redis.NewLinksQ(s.rdb)),
 			handlers.CtxLinks(*s.linksConfig),
 		),
 	)
