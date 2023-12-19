@@ -40,27 +40,18 @@ func (q *linksQ) Get() (*data.Link, error) {
 
 func (q *linksQ) Insert(value data.Link) (*data.Link, error) {
 	clauses := structs.Map(value)
+	stmt := sq.Insert(linksTableName).
+		SetMap(clauses).
+		Suffix("on conflict (id) do update set path = ?, value = ?, expired_at = ?", value.Path, value.Value, value.ExpiredAt).
+		Suffix("returning *")
 
 	var result data.Link
-	stmt := sq.Insert(linksTableName).SetMap(clauses).Suffix("returning *")
 	err := q.db.Get(&result, stmt)
 
 	return &result, err
 }
 
-func (q *linksQ) Delete(id string) error {
-	stmt := sq.Delete(linksTableName).Where(sq.Eq{"id": id})
-	err := q.db.Exec(stmt)
-	return err
-}
-
 func (q *linksQ) FilterByID(ids ...string) data.LinksQ {
 	q.sql = q.sql.Where(sq.Eq{"n.id": ids})
 	return q
-}
-
-func (q *linksQ) Transaction(fn func(q data.LinksQ) error) error {
-	return q.db.Transaction(func() error {
-		return fn(q)
-	})
 }
