@@ -16,8 +16,8 @@ type service struct {
 	log         *logan.Entry
 	copus       types.Copus
 	listener    net.Listener
-	db          *pgdb.DB
-	rdb         *redis.Client
+	db          func() *pgdb.DB
+	rdb         func() *redis.Client
 	linksConfig *config.LinksConfig
 }
 
@@ -37,8 +37,8 @@ func newService(cfg config.Config) *service {
 		log:         cfg.Log(),
 		copus:       cfg.Copus(),
 		listener:    cfg.Listener(),
-		db:          cfg.DB(),
-		rdb:         cfg.RedisClient(),
+		db:          cfg.DB,
+		rdb:         cfg.RedisClient,
 		linksConfig: cfg.LinksConfig(),
 	}
 }
