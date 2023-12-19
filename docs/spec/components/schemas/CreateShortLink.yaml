@@ -1,0 +1,18 @@
+type: object
+required:
+  - attributes
+properties:
+  attributes:
+    type: object
+    properties:
+      value:
+        description: abi or hash data
+        type: object
+        format: json.RawMessage
+      path:
+        description: tool path
+        type: string
+        example: '/abi/encoder'
+    required:
+      - value
+      - path
