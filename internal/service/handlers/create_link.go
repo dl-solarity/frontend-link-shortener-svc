@@ -13,11 +13,6 @@ import (
 	"gitlab.com/distributed_lab/ape/problems"
 )
 
-const (
-	linkLength = 8
-	padding    = 2
-)
-
 func CreateLink(w http.ResponseWriter, r *http.Request) {
 	request, err := requests.NewCreateLinkRequest(r)
 	if err != nil {
@@ -45,9 +40,10 @@ func CreateLink(w http.ResponseWriter, r *http.Request) {
 func newLinkData(request requests.CreateLinkRequest, config config.LinksConfig) *data.Link {
 	path, value := request.Data.Attributes.Path, request.Data.Attributes.Value
 	linkHash := getHash(getHash(path) + getHash(string(value)))
+	length, padding := config.Length, config.Padding
 
 	return &data.Link{
-		ID:        linkHash[padding : padding+linkLength],
+		ID:        linkHash[padding : padding+length],
 		ExpiredAt: time.Now().Add(config.Duration).UTC(),
 		Value:     value,
 		Path:      path,
