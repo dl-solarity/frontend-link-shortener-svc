@@ -4,31 +4,40 @@ import (
 	"time"
 
 	"gitlab.com/distributed_lab/figure"
+	"gitlab.com/distributed_lab/kit/comfig"
 	"gitlab.com/distributed_lab/kit/kv"
 	"gitlab.com/distributed_lab/logan/v3/errors"
 )
 
-type Links struct {
+type LinksConfig struct {
 	Duration time.Duration `fig:"duration"`
 }
 
-func (c *config) Links() Links {
-	c.Lock()
-	defer c.Unlock()
+type Links interface {
+	LinksConfig() *LinksConfig
+}
 
-	if c.links != nil {
-		return *c.links
+func NewLinks(getter kv.Getter) Links {
+	return &links{
+		getter: getter,
 	}
+}
 
-	links := &Links{
-		Duration: time.Hour * 24,
-	}
-	config := kv.MustGetStringMap(c.getter, "links")
-	if err := figure.Out(links).From(config).Please(); err != nil {
-		panic(errors.Wrap(err, "failed to figure out links"))
-	}
+type links struct {
+	getter kv.Getter
+	once   comfig.Once
+}
 
-	c.links = links
+func (l *links) LinksConfig() *LinksConfig {
+	return l.once.Do(func() interface{} {
+		config := &LinksConfig{
+			Duration: time.Hour * 24,
+		}
+		raw := kv.MustGetStringMap(l.getter, "links")
+		if err := figure.Out(config).From(raw).Please(); err != nil {
+			panic(errors.Wrap(err, "failed to figure out links"))
+		}
 
-	return *links
+		return config
+	}).(*LinksConfig)
 }

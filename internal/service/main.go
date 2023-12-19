@@ -12,11 +12,11 @@ import (
 )
 
 type service struct {
-	log      *logan.Entry
-	copus    types.Copus
-	listener net.Listener
-	db       *pgdb.DB
-	links    config.Links
+	log         *logan.Entry
+	copus       types.Copus
+	listener    net.Listener
+	db          *pgdb.DB
+	linksConfig *config.LinksConfig
 }
 
 func (s *service) run() error {
@@ -32,11 +32,11 @@ func (s *service) run() error {
 
 func newService(cfg config.Config) *service {
 	return &service{
-		log:      cfg.Log(),
-		copus:    cfg.Copus(),
-		listener: cfg.Listener(),
-		db:       cfg.DB(),
-		links:    cfg.Links(),
+		log:         cfg.Log(),
+		copus:       cfg.Copus(),
+		listener:    cfg.Listener(),
+		db:          cfg.DB(),
+		linksConfig: cfg.LinksConfig(),
 	}
 }
 

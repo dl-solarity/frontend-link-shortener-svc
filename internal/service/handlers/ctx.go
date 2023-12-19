@@ -37,12 +37,12 @@ func LinksQ(r *http.Request) data.LinksQ {
 	return r.Context().Value(linksQCtxKey).(data.LinksQ).New()
 }
 
-func CtxLinks(entry config.Links) func(context.Context) context.Context {
+func CtxLinks(entry config.LinksConfig) func(context.Context) context.Context {
 	return func(ctx context.Context) context.Context {
 		return context.WithValue(ctx, linksCtxKey, entry)
 	}
 }
 
-func Links(r *http.Request) config.Links {
-	return r.Context().Value(linksCtxKey).(config.Links)
+func Links(r *http.Request) config.LinksConfig {
+	return r.Context().Value(linksCtxKey).(config.LinksConfig)
 }

@@ -42,7 +42,7 @@ func CreateLink(w http.ResponseWriter, r *http.Request) {
 	ape.Render(w, response)
 }
 
-func newLinkData(request requests.CreateLinkRequest, config config.Links) *data.Link {
+func newLinkData(request requests.CreateLinkRequest, config config.LinksConfig) *data.Link {
 	path, value := request.Data.Attributes.Path, request.Data.Attributes.Value
 	linkHash := getHash(getHash(path) + getHash(string(value)))
 
