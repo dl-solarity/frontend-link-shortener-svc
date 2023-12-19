@@ -5,6 +5,9 @@ log:
 db:
   url: db_url
 
+redis:
+  url: redis_url
+
 listener:
   addr: :8000
 

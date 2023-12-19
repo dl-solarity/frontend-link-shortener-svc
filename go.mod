@@ -6,6 +6,7 @@ require (
 	github.com/alecthomas/kingpin v2.2.6+incompatible
 	github.com/ethereum/go-ethereum v1.13.5
 	github.com/go-chi/chi v4.1.2+incompatible
+	github.com/redis/go-redis/v9 v9.3.1
 	github.com/rubenv/sql-migrate v1.5.2
 	gitlab.com/distributed_lab/ape v1.7.1
 	gitlab.com/distributed_lab/kit v1.11.2
@@ -14,7 +15,9 @@ require (
 
 require (
 	github.com/btcsuite/btcd/btcec/v2 v2.2.0 // indirect
+	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.0.1 // indirect
+	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/holiman/uint256 v1.2.3 // indirect
 )
 
