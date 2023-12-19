@@ -14,3 +14,6 @@ cop:
   upstream: "http://..."
   service_name: frontend-link-shortener-svc
   service_port: 80
+
+links:
+  duration: 48h

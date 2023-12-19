@@ -16,6 +16,7 @@ func (s *service) router() chi.Router {
 		ape.CtxMiddleware(
 			handlers.CtxLog(s.log),
 			handlers.CtxLinksQ(pg.NewLinksQ(s.db)),
+			handlers.CtxLinks(s.links),
 		),
 	)
 	r.Route("/shortener", func(r chi.Router) {

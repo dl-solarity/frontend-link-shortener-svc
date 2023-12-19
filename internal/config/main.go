@@ -1,6 +1,8 @@
 package config
 
 import (
+	"sync"
+
 	"gitlab.com/distributed_lab/kit/comfig"
 	"gitlab.com/distributed_lab/kit/copus"
 	"gitlab.com/distributed_lab/kit/copus/types"
@@ -13,6 +15,7 @@ type Config interface {
 	pgdb.Databaser
 	types.Copuser
 	comfig.Listenerer
+	Links() Links
 }
 
 type config struct {
@@ -21,6 +24,10 @@ type config struct {
 	types.Copuser
 	comfig.Listenerer
 	getter kv.Getter
+
+	*sync.RWMutex
+
+	links *Links
 }
 
 func New(getter kv.Getter) Config {
@@ -30,5 +37,6 @@ func New(getter kv.Getter) Config {
 		Copuser:    copus.NewCopuser(getter),
 		Listenerer: comfig.NewListenerer(getter),
 		Logger:     comfig.NewLogger(getter, comfig.LoggerOpts{}),
+		RWMutex:    &sync.RWMutex{},
 	}
 }

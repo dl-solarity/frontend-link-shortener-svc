@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/dl-solarity/frontend-link-shortener-svc/internal/config"
 	"github.com/dl-solarity/frontend-link-shortener-svc/internal/data"
 	"github.com/dl-solarity/frontend-link-shortener-svc/internal/service/requests"
 	"github.com/dl-solarity/frontend-link-shortener-svc/resources"
@@ -24,7 +25,8 @@ func CreateLink(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	linkData := newLinkData(request)
+	linksCfg := Links(r)
+	linkData := newLinkData(request, linksCfg)
 
 	link, err := LinksQ(r).Insert(*linkData)
 	if err != nil {
@@ -40,13 +42,13 @@ func CreateLink(w http.ResponseWriter, r *http.Request) {
 	ape.Render(w, response)
 }
 
-func newLinkData(request requests.CreateLinkRequest) *data.Link {
+func newLinkData(request requests.CreateLinkRequest, config config.Links) *data.Link {
 	path, value := request.Data.Attributes.Path, request.Data.Attributes.Value
 	linkHash := getHash(getHash(path) + getHash(string(value)))
 
 	return &data.Link{
 		ID:        linkHash[padding : padding+linkLength],
-		ExpiredAt: time.Now().Add(time.Hour * 24 * 7).UTC(),
+		ExpiredAt: time.Now().Add(config.Duration).UTC(),
 		Value:     request.Data.Attributes.Value,
 		Path:      path,
 	}
