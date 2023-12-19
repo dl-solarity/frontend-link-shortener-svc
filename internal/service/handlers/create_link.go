@@ -24,17 +24,9 @@ func CreateLink(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	path, value := request.Data.Attributes.Path, request.Data.Attributes.Value
-	linkHash := getHash(getHash(path) + getHash(string(value)))
+	linkData := newLinkData(request)
 
-	linkData := data.Link{
-		ID:        linkHash[padding : padding+linkLength],
-		ExpiredAt: time.Now().Add(time.Hour * 24 * 7).UTC(),
-		Value:     request.Data.Attributes.Value,
-		Path:      path,
-	}
-
-	link, err := LinksQ(r).Insert(linkData)
+	link, err := LinksQ(r).Insert(*linkData)
 	if err != nil {
 		Log(r).WithError(err).Error("failed to create a link")
 		ape.RenderErr(w, problems.InternalError())
@@ -46,6 +38,18 @@ func CreateLink(w http.ResponseWriter, r *http.Request) {
 	}
 
 	ape.Render(w, response)
+}
+
+func newLinkData(request requests.CreateLinkRequest) *data.Link {
+	path, value := request.Data.Attributes.Path, request.Data.Attributes.Value
+	linkHash := getHash(getHash(path) + getHash(string(value)))
+
+	return &data.Link{
+		ID:        linkHash[padding : padding+linkLength],
+		ExpiredAt: time.Now().Add(time.Hour * 24 * 7).UTC(),
+		Value:     request.Data.Attributes.Value,
+		Path:      path,
+	}
 }
 
 func newLinkModel(link *data.Link) resources.ShortLink {
