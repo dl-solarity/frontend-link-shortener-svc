@@ -49,7 +49,7 @@ func newLinkData(request requests.CreateLinkRequest, config config.Links) *data.
 	return &data.Link{
 		ID:        linkHash[padding : padding+linkLength],
 		ExpiredAt: time.Now().Add(config.Duration).UTC(),
-		Value:     request.Data.Attributes.Value,
+		Value:     value,
 		Path:      path,
 	}
 }
