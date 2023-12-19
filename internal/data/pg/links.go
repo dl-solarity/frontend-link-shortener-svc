@@ -39,10 +39,9 @@ func (q *linksQ) Get() (*data.Link, error) {
 }
 
 func (q *linksQ) Insert(value data.Link) (*data.Link, error) {
-	clauses := structs.Map(value)
 	stmt := sq.Insert(linksTableName).
-		SetMap(clauses).
-		Suffix("on conflict (id) do update set path = ?, value = ?, expired_at = ?", value.Path, value.Value, value.ExpiredAt).
+		SetMap(structs.Map(value)).
+		Suffix("on conflict (id) do update set path = EXCLUDED.path, value = EXCLUDED.value, expired_at = EXCLUDED.expired_at").
 		Suffix("returning *")
 
 	var result data.Link
