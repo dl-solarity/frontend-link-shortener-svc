@@ -16,7 +16,7 @@ func GetData(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	link, err := LinksQ(r).FilterByID(request.Link).Get()
+	link, err := LinksQ(r).Get(r.Context(), request.Link)
 	if err != nil {
 		Log(r).WithError(err).Error("failed to get a link")
 		ape.RenderErr(w, problems.InternalError())

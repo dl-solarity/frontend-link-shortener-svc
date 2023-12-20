@@ -1,6 +1,7 @@
 package pg
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 
@@ -28,9 +29,9 @@ func (q *linksQ) New() data.LinksQ {
 	return NewLinksQ(q.db)
 }
 
-func (q *linksQ) Get() (*data.Link, error) {
+func (q *linksQ) Get(ctx context.Context, id string) (*data.Link, error) {
 	var result data.Link
-	err := q.db.Get(&result, q.sql)
+	err := q.db.GetContext(ctx, &result, q.sql.Where(sq.Eq{"id": id}))
 	if err == sql.ErrNoRows {
 		return nil, nil
 	}
@@ -38,19 +39,14 @@ func (q *linksQ) Get() (*data.Link, error) {
 	return &result, err
 }
 
-func (q *linksQ) Insert(value data.Link) (*data.Link, error) {
+func (q *linksQ) Insert(ctx context.Context, value data.Link) (*data.Link, error) {
 	stmt := sq.Insert(linksTableName).
 		SetMap(structs.Map(value)).
 		Suffix("on conflict (id) do update set path = EXCLUDED.path, value = EXCLUDED.value, expired_at = EXCLUDED.expired_at").
 		Suffix("returning *")
 
 	var result data.Link
-	err := q.db.Get(&result, stmt)
+	err := q.db.GetContext(ctx, &result, stmt)
 
 	return &result, err
-}
-
-func (q *linksQ) FilterByID(ids ...string) data.LinksQ {
-	q.sql = q.sql.Where(sq.Eq{"n.id": ids})
-	return q
 }

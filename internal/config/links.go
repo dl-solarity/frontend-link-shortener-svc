@@ -11,6 +11,8 @@ import (
 
 type LinksConfig struct {
 	Duration time.Duration `fig:"duration"`
+	Length   int           `fig:"length"`
+	Padding  int           `fig:"padding"`
 }
 
 type Links interface {
@@ -32,6 +34,8 @@ func (l *links) LinksConfig() *LinksConfig {
 	return l.once.Do(func() interface{} {
 		config := &LinksConfig{
 			Duration: time.Hour * 24,
+			Length:   8,
+			Padding:  2,
 		}
 		raw := kv.MustGetStringMap(l.getter, "links")
 		if err := figure.Out(config).From(raw).Please(); err != nil {
