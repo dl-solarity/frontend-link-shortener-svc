@@ -1,0 +1,24 @@
+log:
+  level: debug
+  disable_sentry: true
+
+db:
+  url: db_url
+
+redis:
+  url: redis_url
+
+listener:
+  addr: :8000
+
+cop:
+  disabled: true
+  endpoint: "http://..."
+  upstream: "http://..."
+  service_name: frontend-link-shortener-svc
+  service_port: 80
+
+links:
+  duration: 48h
+  length: 8
+  padding: 2

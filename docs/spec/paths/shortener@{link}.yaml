@@ -1,0 +1,32 @@
+parameters:
+  - name: link
+    in: path
+    required: true
+    schema:
+      type: string
+    example: '5860cdcd'
+
+get:
+  tags:
+    - Short Links
+  summary: Get data by a Short Link
+  operationId: getData
+  responses:
+    "200":
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                $ref: "#/components/schemas/ShortLink"
+    "403":
+      description: Bad request
+    "404":
+      description: Link not found
+    "429":
+      description: Too many requests
+    "500":
+      description: Failed to get data

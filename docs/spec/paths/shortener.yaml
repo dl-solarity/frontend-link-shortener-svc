@@ -1,0 +1,33 @@
+post:
+  tags:
+    - Short Links
+  summary: Create a Short Link
+  operationId: createLink
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              $ref: '#/components/schemas/CreateShortLink'
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                $ref: '#/components/schemas/ShortLink'
+    '403':
+      description: Bad request
+    '429':
+      description: Too many requests
+    '500':
+      description: Failed to create a Short Link
