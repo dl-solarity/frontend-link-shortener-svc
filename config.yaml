@@ -3,9 +3,12 @@ log:
   disable_sentry: true
 
 db:
+  # PostgreSQL connection string
+  # it's ok to not specify it as the service uses only Redis at the moment
   url: db_url
 
 redis:
+  # Redis connection string
   url: redis_url
 
 listener:
@@ -18,7 +21,15 @@ cop:
   service_name: frontend-link-shortener-svc
   service_port: 80
 
+# link params
 links:
+  # time it takes for the link to expire, can specify in hours (h), minutes (m) and seconds (s)
   duration: 48h
+
+  # short link length
   length: 8
+
+  # padding specifies the number of symbols to omit in the beginning of the hash.
+  # example: keccak-256 hash begins with '0x', which will result in the first two 
+  # characters being the same in all links, so the padding should be 2
   padding: 2
