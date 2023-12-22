@@ -15,7 +15,7 @@ func (s *service) router() chi.Router {
 		ape.LoganMiddleware(s.log),
 		ape.CtxMiddleware(
 			handlers.CtxLog(s.log),
-			handlers.CtxLinksQ(redis.NewLinksQ(s.rdb())),
+			handlers.CtxLinksQ(redis.NewLinksQ(s.rdb)),
 			handlers.CtxLinks(*s.linksConfig),
 		),
 	)
