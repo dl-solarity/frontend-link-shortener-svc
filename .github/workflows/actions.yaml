@@ -2,8 +2,9 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - 'master'
-      - 'main'
+      # - 'master'
+      # - 'main'
+      - '**'
 
 env:
   CI_JOB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
