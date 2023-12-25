@@ -1,17 +1,11 @@
-# frontend-link-shortener-svc
-
-## Description
-
-[//]: # (TODO: add description)
+# Solarity Link Shortener Microservice
 
 ## Install
-
   ```
   git clone github.com/dl-solarity/frontend-link-shortener-svc
   cd frontend-link-shortener-svc
   go build main.go
   export KV_VIPER_FILE=./config.yaml
-  ./main migrate up
   ./main run service
   ```
 
@@ -28,15 +22,9 @@ To open online documentation, go to [swagger editor](http://localhost:8080/swagg
 To build documentation use `npm run build` command,
 that will create open-api documentation in `web_deploy` folder.
 
-To generate resources for Go models run `./generate.sh` script in root folder.
-use `./generate.sh --help` to see all available options.
-
-Note: if you are using Gitlab for building project `docs/spec/paths` folder must not be
-empty, otherwise only `Build and Publish` job will be passed.  
-
 ## Running from docker 
   
-Make sure that docker installed.
+Make sure that docker is installed.
 
 use `docker run ` with `-p 8080:80` to expose port 80 to 8080
 
@@ -49,19 +37,9 @@ use `docker run ` with `-p 8080:80` to expose port 80 to 8080
 
 * Set up environment value with config file path `KV_VIPER_FILE=./config.yaml`
 * Provide valid config file
-* Launch the service with `migrate up` command to create database schema
-* Launch the service with `run service` command
 
 
 ### Database
-For services, we do use ***PostgresSQL*** database. 
-You can [install it locally](https://www.postgresql.org/download/) or use [docker image](https://hub.docker.com/_/postgres/).
+This service utilizes ***Redis*** database. 
+The easiest way to set it up is to use [docker image](https://hub.docker.com/_/redis).
 
-
-### Third-party services
-
-
-## Contact
-
-Responsible 
-The primary contact for this project is  [//]: # (TODO: place link to your telegram and email)
