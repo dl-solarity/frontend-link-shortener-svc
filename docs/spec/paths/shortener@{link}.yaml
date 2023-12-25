@@ -22,7 +22,7 @@ get:
               data:
                 type: object
                 $ref: "#/components/schemas/ShortLink"
-    "403":
+    "400":
       description: Bad request
     "404":
       description: Link not found
