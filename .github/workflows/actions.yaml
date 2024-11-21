@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - 'master'
-      - '**'
+      # - '**'
 
 env:
   CI_JOB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
