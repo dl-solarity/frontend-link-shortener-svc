@@ -1,0 +1,8 @@
+apiVersion: skaffold/v2beta28
+kind: Config
+build:
+  artifacts:
+  - image: frontend-link-shortener-svc
+    docker:
+      buildArgs:
+        CI_JOB_TOKEN: "{{.CI_JOB_TOKEN}}"
